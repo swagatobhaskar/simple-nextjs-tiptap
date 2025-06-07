@@ -33,3 +33,17 @@ Highlight: `npm install @tiptap/extension-highlight`
 
 Link: `npm install @tiptap/extension-link`
 
+BulletList & ListItem: `npm install @tiptap/extension-bullet-list @tiptap/extension-list-item`
+
+Document: `npm install @tiptap/extension-document`
+
+Paragraph: `npm install @tiptap/extension-paragraph`
+
+Text: `npm install @tiptap/extension-text`
+
+Heading: `npm install @tiptap/extension-heading`
+
+HardBreak: `npm install @tiptap/extension-hard-break`
+
+HorizontalRule: `npm install @tiptap/extension-horizontal-rule`
+

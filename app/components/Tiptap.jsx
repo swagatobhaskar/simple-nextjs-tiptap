@@ -15,6 +15,14 @@ import Strike from '@tiptap/extension-strike'
 import Code from '@tiptap/extension-code'
 import Highlight from '@tiptap/extension-highlight'
 import Link from '@tiptap/extension-link'
+import BulletList from '@tiptap/extension-bullet-list'
+import ListItem from '@tiptap/extension-list-item'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
+import Heading from '@tiptap/extension-heading'
+import HardBreak from '@tiptap/extension-hard-break'
+import HorizontalRule from '@tiptap/extension-horizontal-rule'
 
 
 const Tiptap = () => {
@@ -22,10 +30,19 @@ const Tiptap = () => {
         immediatelyRender: false,
         autofocus: true,
         extensions: [
+            Document,
+            Paragraph,
+            Text,
+            HardBreak,
+            HorizontalRule.configure({
+                HTMLAttributes: {
+                    class: 'my-4 cursor-pointer border-t-4 border-gray-600'
+                },
+            }),
             StarterKit.configure({
-            heading: {
-                levels: [1, 2],
-            },
+                heading: {
+                    levels: [1, 2],
+                },
             }),
             Blockquote.configure({
                 HTMLAttributes: {
@@ -63,6 +80,16 @@ const Tiptap = () => {
                 },
                 isAllowedUri: (url, ctx) => ctx.defaultValidate(url) && !url.startsWith('./'),
                 shouldAutoLink: (url) => url.startsWith('https://'),
+            }),
+            BulletList.configure({
+                itemTypeName: 'listItem',
+                HTMLAttributes: {
+                    class: 'pl-2 list-disc list-inside'
+                },
+            }),
+            ListItem,
+            Heading.configure({
+                levels: [1, 2, 3],
             }),
         ],
         content: '  \
@@ -240,6 +267,62 @@ const Tiptap = () => {
                     disabled={!editor.can().unsetBlockquote()}
                 >
                     Unset blockquote
+                </button>
+                {/* BulletList */}
+                <button
+                    onClick={() => editor.chain().focus().toggleBulletList().run()}
+                    className={editor.isActive('bulletList') ? 'is-active' : ''}
+                >
+                    Toggle bullet list
+                </button>
+                 <button
+                    onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                    className={editor.isActive('orderedList') ? 'is-active' : ''}
+                >
+                    Toggle ordered list
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().splitListItem('listItem').run()}
+                    disabled={!editor.can().splitListItem('listItem')}
+                >
+                    Split list item
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().sinkListItem('listItem').run()}
+                    disabled={!editor.can().sinkListItem('listItem')}
+                >
+                    Sink list item
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().liftListItem('listItem').run()}
+                    disabled={!editor.can().liftListItem('listItem')}
+                >
+                    Lift list item
+                </button>
+                {/* Heading */}
+                <button
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+                    className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
+                >
+                    H1
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                    className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
+                >
+                    H2
+                </button> 
+                <button
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                    className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}
+                >
+                    H3
+                </button>
+                {/* HardBreak */}
+                <button onClick={() => editor.chain().focus().setHardBreak().run()}>Set hard break</button>
+                {/* HorizontalRule */}
+                <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
+                    Set horizontal rule
                 </button>
             </div>
             <EditorContent editor={editor} />
