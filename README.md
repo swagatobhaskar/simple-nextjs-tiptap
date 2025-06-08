@@ -47,3 +47,5 @@ HardBreak: `npm install @tiptap/extension-hard-break`
 
 HorizontalRule: `npm install @tiptap/extension-horizontal-rule`
 
+Image: `npm install @tiptap/extension-image`
+

@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faBold, faItalic, faQuoteLeft, faUnderline, faStrikethrough
+    faBold, faItalic, faQuoteLeft, faUnderline, faStrikethrough, faImage
     } from '@fortawesome/free-solid-svg-icons'
 
 import {useEditor, EditorContent} from '@tiptap/react'
@@ -23,6 +23,7 @@ import Text from '@tiptap/extension-text'
 import Heading from '@tiptap/extension-heading'
 import HardBreak from '@tiptap/extension-hard-break'
 import HorizontalRule from '@tiptap/extension-horizontal-rule'
+import Image from '@tiptap/extension-image'
 
 
 const Tiptap = () => {
@@ -34,6 +35,11 @@ const Tiptap = () => {
             Paragraph,
             Text,
             HardBreak,
+            Image.configure({
+                HTMLAttributes: {
+                    class: 'block h-auto my-5 w-full'
+                },
+            }),
             HorizontalRule.configure({
                 HTMLAttributes: {
                     class: 'my-4 cursor-pointer border-t-4 border-gray-600'
@@ -118,6 +124,14 @@ const Tiptap = () => {
             editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
         } catch (e) {
             alert(e.message)
+        }
+    }, [editor])
+
+    const addImage = useCallback(() => {
+        const url = window.prompt('URL')
+
+        if (url) {
+            editor.chain().focus().setImage({src: url}).run()
         }
     }, [editor])
 
@@ -323,6 +337,10 @@ const Tiptap = () => {
                 {/* HorizontalRule */}
                 <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
                     Set horizontal rule
+                </button>
+                {/* Image */}
+                <button onClick={addImage}>
+                    <FontAwesomeIcon icon={faImage} />
                 </button>
             </div>
             <EditorContent editor={editor} />
