@@ -10,20 +10,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import {useEditor, EditorContent} from '@tiptap/react'
-
 import StarterKit from '@tiptap/starter-kit'
-import Blockquote from '@tiptap/extension-blockquote'
 import Underline from '@tiptap/extension-underline'
 import Highlight from '@tiptap/extension-highlight'
 import Link from '@tiptap/extension-link'
-import Document from '@tiptap/extension-document'
-import Paragraph from '@tiptap/extension-paragraph'
-import Text from '@tiptap/extension-text'
-import HardBreak from '@tiptap/extension-hard-break'
-import HorizontalRule from '@tiptap/extension-horizontal-rule'
 import Image from '@tiptap/extension-image'
 
-const Tiptap = () => {
+const Tiptap = ({content, onchange}) => {
     const editor = useEditor({
         immediatelyRender: false,
         autofocus: true,
@@ -54,24 +47,24 @@ const Tiptap = () => {
                         class: 'bg-gray-300 text-white border-md p-2'
                     },
                 },
+                blockquote: {
+                    HTMLAttributes: {
+                        class: 'border-l-2 border-gray-300 ml-2 pl-2'
+                    }
+                },
+                horizontalRule: {
+                    HTMLAttributes: {
+                        class: 'my-4 cursor-pointer border-t-1 border-gray-600'
+                    },
+                },
             }),
-            Document,
-            Paragraph,
-            Text,
-            HardBreak,
+            // Document,
+            // Paragraph,
+            // Text,
+            // HardBreak,
             Image.configure({
                 HTMLAttributes: {
                     class: 'block h-auto my-5 w-full'
-                },
-            }),
-            HorizontalRule.configure({
-                HTMLAttributes: {
-                    class: 'my-4 cursor-pointer border-t-1 border-gray-600'
-                },
-            }),
-            Blockquote.configure({
-                HTMLAttributes: {
-                    class: 'border-l-2 border-gray-300 ml-2 pl-2'
                 },
             }),
             Underline.configure({
@@ -105,10 +98,16 @@ const Tiptap = () => {
                 class: 'rounded-md p-3 h-full w-full overflow-auto outline outline-gray-400'
             }
         },
-        content: '  \
-            <p>Hello, World...</p>  \
-            <p>Lorem Ipsum Dolor ...</p>    \
-            '
+        content: content,
+        // content: '  \
+        //     <p>Hello, World...</p>  \
+        //     <p>Lorem Ipsum Dolor ...</p>    \
+        //     ',
+
+        onUpdate: ({editor}) => {
+            // console.log(editor.getHTML())
+            onchange(editor.getHTML());
+        }
     })
     
     const setLink = useCallback(() => {
@@ -145,7 +144,7 @@ const Tiptap = () => {
     if (!editor) return null
 
     return (
-        <div className='h-screen w-full flex justify-center'>
+        <div className='w-full flex justify-center'>
             <div className="flex flex-col w-3/4 h-full">
                 <div className='my-3 p-1 grid grid-rows-2 grid-cols-12 outline-2 outline-gray-400 rounded-md'>
                     {/* Bold */}
@@ -316,9 +315,9 @@ const Tiptap = () => {
                             className={`${editor.isActive('blockquote') ? 'bg-gray-400' : 'bg-white'} transition-colors duration-300`}
                             width="32px" height="32px" style={{ margin: 'auto', display: 'block' }}
                             viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="matrix(1, 0, 0, 1, 0, 0)">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                            stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.05"></g><g id="SVGRepo_iconCarrier">
-                                <path d="M10 17.5H19M6 7.5H19M10 12.5H17M6.5 12V18" stroke="#121923" stroke-width="1.75"></path>
+                            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round"
+                            strokeLinejoin="round" stroke="#CCCCCC" strokeWidth="0.05"></g><g id="SVGRepo_iconCarrier">
+                                <path d="M10 17.5H19M6 7.5H19M10 12.5H17M6.5 12V18" stroke="#121923" strokeWidth="1.75"></path>
                             </g>
                         </svg>
                     </button>
@@ -359,9 +358,9 @@ const Tiptap = () => {
                         disabled={!editor.can().sinkListItem('listItem')}
                     >
                         {/* Sink list item */}
-                        <svg style={{ display:'block', margin:'auto' }} fill="#000000" width="24px" height="24px" viewBox="0 0 56.00 56.00" xmlns="http://www.w3.org/2000/svg" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)" stroke="#000000" stroke-width="0.00056">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.44800000000000006"></g>
+                        <svg style={{ display:'block', margin:'auto' }} fill="#000000" width="24px" height="24px" viewBox="0 0 56.00 56.00" xmlns="http://www.w3.org/2000/svg" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)" stroke="#000000" strokeWidth="0.00056">
+                            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                            <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" stroke="#CCCCCC" strokeWidth="0.44800000000000006"></g>
                             <g id="SVGRepo_iconCarrier">
                                 <path d="M 2.8067 17.5443 C 4.3659 17.5443 5.6134 16.2969 5.6134 14.7599 C 5.6134 13.2007 4.3659 11.9532 2.8067 11.9532 C 1.2697 11.9532 0 13.2007 0 14.7599 C 0 16.2969 1.2697 17.5443 2.8067 17.5443 Z M 12.6523 16.5420 L 43.0805 16.5420 C 44.1051 16.5420 44.8847 15.7623 44.8847 14.7599 C 44.8847 13.7352 44.1051 12.9557 43.0805 12.9557 L 12.6523 12.9557 C 11.6500 12.9557 10.8703 13.7352 10.8703 14.7599 C 10.8703 15.7623 11.6500 16.5420 12.6523 16.5420 Z M 8.3755 31.0209 C 9.9348 31.0209 11.1822 29.7735 11.1822 28.2142 C 11.1822 26.6549 9.9348 25.4075 8.3755 25.4075 C 6.8162 25.4075 5.5688 26.6549 5.5688 28.2142 C 5.5688 29.7735 6.8162 31.0209 8.3755 31.0209 Z M 18.2212 30.0185 L 48.6493 30.0185 C 49.6516 30.0185 50.4535 29.2166 50.4535 28.2142 C 50.4535 27.2118 49.6516 26.4322 48.6493 26.4322 L 18.2212 26.4322 C 17.1965 26.4322 16.4169 27.2118 16.4169 28.2142 C 16.4169 29.2166 17.1965 30.0185 18.2212 30.0185 Z M 13.9443 44.4974 C 15.4813 44.4974 16.7510 43.2277 16.7510 41.6907 C 16.7510 40.1315 15.4813 38.8841 13.9443 38.8841 C 12.3850 38.8841 11.1376 40.1315 11.1376 41.6907 C 11.1376 43.2277 12.3850 44.4974 13.9443 44.4974 Z M 23.7900 43.4728 L 54.2181 43.4728 C 55.2204 43.4728 56 42.6931 56 41.6907 C 56 40.6661 55.2204 39.8864 54.2181 39.8864 L 23.7900 39.8864 C 22.7653 39.8864 21.9857 40.6661 21.9857 41.6907 C 21.9857 42.6931 22.7653 43.4728 23.7900 43.4728 Z"></path>
                             </g>
@@ -400,8 +399,8 @@ const Tiptap = () => {
                         onClick={() => editor.chain().focus().setHardBreak().run()}
                     >
                         {/* Set hard break */}
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" style={{margin: 'auto', display: 'block'}} viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" strokeLinejoin="round" d="m7.49 12-3.75 3.75m0 0 3.75 3.75m-3.75-3.75h16.5V4.499" />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" style={{margin: 'auto', display: 'block'}} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m7.49 12-3.75 3.75m0 0 3.75 3.75m-3.75-3.75h16.5V4.499" />
                         </svg>
                     </button>
                     {/* HorizontalRule */}
@@ -409,8 +408,8 @@ const Tiptap = () => {
                         title="Horizontal line"
                         onClick={() => editor.chain().focus().setHorizontalRule().run()}>
                         {/* Set horizontal rule */}
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" style={{margin: 'auto', display: 'block'}} width="32px" height="32px" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" strokeLinejoin="round" d="M5 12h14" />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" style={{margin: 'auto', display: 'block'}} width="32px" height="32px" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                         </svg>
                     </button>
                     {/* Image */}
