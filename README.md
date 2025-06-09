@@ -35,6 +35,8 @@ Link: `npm install @tiptap/extension-link`
 
 BulletList & ListItem: `npm install @tiptap/extension-bullet-list @tiptap/extension-list-item`
 
+OrderedList: `npm install @tiptap/extension-ordered-list`
+
 Document: `npm install @tiptap/extension-document`
 
 Paragraph: `npm install @tiptap/extension-paragraph`
