@@ -1,12 +1,12 @@
 'use client'
 
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faBold, faItalic, faQuoteLeft, faUnderline, faStrikethrough,
     faImage, faHighlighter, faQuoteRightAlt, faCode, faList, faListNumeric,
-    faLink, faLinkSlash, faBarsStaggered
+    faLink, faLinkSlash, faBarsStaggered, faHeading
 } from '@fortawesome/free-solid-svg-icons'
 
 import {useEditor, EditorContent} from '@tiptap/react'
@@ -17,6 +17,9 @@ import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 
 const Tiptap = ({content, onchange}) => {
+
+    const [headingLevel, setHeadingLevel] = useState(1);
+
     const editor = useEditor({
         immediatelyRender: false,
         autofocus: true,
@@ -377,6 +380,31 @@ const Tiptap = ({content, onchange}) => {
                     <FontAwesomeIcon icon={faBarsStaggered} />
                 </button>
                 {/* Heading */}
+                <div className='relative'>
+                    <button className='rte_toolbar_btn'>
+                        <FontAwesomeIcon icon={faHeading} />
+                    </button>
+                    <select
+                        value={headingLevel}
+                        onChange={(e) => {
+                            const level = Number(e.target.value);
+                            setHeadingLevel(level);
+                            editor.chain().focus().toggleHeading({ level }).run();
+                        }}
+                        className='absolute top-0 left-0 opacity-0 w-full h-full cursor-pointer'
+                    >
+                        {[1, 2, 3].map((level) => (
+                            <option
+                                key={level}
+                                value={level}
+                                className={editor.isActive('heading', {level: {level}} ? 'bg-gray-100': 'rte_toolbar_btn')}
+                            >
+                                H{level}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                {/*
                 <button
                     onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
                     className={editor.isActive('heading', { level: 1 }) ? 'bg-gray-100' : "rte_toolbar_btn"}
@@ -395,6 +423,7 @@ const Tiptap = ({content, onchange}) => {
                 >
                     H3
                 </button>
+                */}
                 {/* HardBreak */}
                 <button
                     title="Line Break"

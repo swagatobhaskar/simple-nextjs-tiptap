@@ -1,3 +1,6 @@
+
+![alt text](<Screenshot from 2025-06.png>)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -29,5 +32,3 @@ Highlight: `npm install @tiptap/extension-highlight`
 Link: `npm install @tiptap/extension-link`
 
 Image: `npm install @tiptap/extension-image`
-
-![alt text](<Screenshot from 2025-06.png>)
