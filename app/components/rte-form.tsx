@@ -22,11 +22,17 @@ export default function ContentForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="min-h-screen mx-auto max-w-3/6 min-w-xl p-2">
             {/* <input type="text" id="title" name="title" onChange={(e)=>handleChange(e)} /> */}
-            <Tiptap content={content} onchange={onchange} />
-            <button type="submit">Submit</button>
+            <div className="flex flex-col space-y-4">
+                <Tiptap content={content} onchange={onchange} />
+                <button
+                    type="submit"
+                    className="self-center w-fit my-2 px-4 py-1 rounded-sm bg-slate-700 hover:bg-slate-900
+                        transition-all duration-200 shadow-md text-white text-lg hover:cursor-pointer hover:shadow-lg
+                        focus:shadow-xl focus:outline-none"
+                >Submit</button>
+            </div>
         </form>
     );
-
 }
