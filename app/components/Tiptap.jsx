@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -66,6 +66,7 @@ const Tiptap = ({content, onchange}) => {
             // Text,
             // HardBreak,
             Image.configure({
+                inline: false,
                 HTMLAttributes: {
                     class: 'block h-auto my-5 w-full'
                 },
@@ -136,13 +137,40 @@ const Tiptap = ({content, onchange}) => {
         }
     }, [editor])
 
-    const addImage = useCallback(() => {
-        const url = window.prompt('URL')
+    // const addImage = useCallback(() => {
+    //     const url = window.prompt('URL')
 
-        if (url) {
-            editor.chain().focus().setImage({src: url}).run()
+    //     if (url) {
+    //         editor.chain().focus().setImage({src: url}).run()
+    //     }
+    // }, [editor])
+
+    const inputRef = useRef();
+
+    const addImage = () => {
+        inputRef.current?.click();
+    }
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const formData = new FormData()
+        formData.append('image', file)
+
+        try {
+            const res = await fetch('/api/uploads/', {
+                method: 'POST',
+                body: formData,
+            })
+            if (!res.ok) throw new Error('Image upload failed');
+            const data = await res.json()
+
+            editor.chain().focus().setImage({ src: data.url }).run()
+        } catch (error) {
+            console.error('Error uploading image:', error);
         }
-    }, [editor])
+    }
 
     if (!editor) return null
 
@@ -447,9 +475,18 @@ const Tiptap = ({content, onchange}) => {
                     </svg>
                 </button>
                 {/* Image */}
-                <button onClick={addImage} className="rte_toolbar_btn">
-                    <FontAwesomeIcon icon={faImage} />
-                </button>
+                <>
+                    <button onClick={addImage} className="rte_toolbar_btn" type='button'> {/* onChange={handleImageUpload} */}
+                        <FontAwesomeIcon icon={faImage} />
+                    </button>
+                    <input
+                        type='file'
+                        accept='image/*'
+                        onChange={handleImageUpload}
+                        ref={inputRef}
+                        style={{display: 'none'}}
+                    />
+                </>
             </div>
             <div className='flex flex-col '>
                 <EditorContent
